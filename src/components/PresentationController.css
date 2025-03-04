@@ -1,0 +1,195 @@
+:root {
+    --primary-color: #8EC5FC;
+    --secondary-color: #E0C3FC;
+    --accent-color: #C3A2F5     ;
+    --background-gradient: linear-gradient(135deg, #8EC5FC 0%, #E0C3FC 100%);
+    --text-color-light: #ffffff;
+    --text-color-dark: #2C3E50;
+    --border-radius: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.presentation-controller-full {
+    width: 100vw;
+    height: 100vh;
+    background: var(--background-gradient);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color-dark);
+    padding: 20px;
+    overflow: hidden;
+}
+
+.controller-content {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.time-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.time-icon {
+    color: var(--accent-color);
+    width: 28px;
+    height: 28px;
+}
+
+.time-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.slide-info {
+    font-size: 1.2rem;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 8px 15px;
+    border-radius: 20px;
+}
+
+.gesture-control-section {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.gesture-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.3);
+    color: var(--text-color-dark);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gesture-button:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.gesture-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.gesture-button .gesture-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.control-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.zoom-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: var(--text-color-dark);
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.zoom-button:hover {
+    opacity: 1;
+}
+
+.zoom-level {
+    font-weight: bold;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+}
+
+.presentation-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: var(--accent-color);
+    color: var(--text-color-dark);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.presentation-toggle:hover {
+    background: color-mix(in srgb, var(--accent-color) 85%, white);
+}
+
+.progress-container {
+    margin-top: 30px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .controller-content {
+        padding: 20px;
+    }
+
+    .navigation-buttons {
+        flex-direction: column;
+    }
+
+    .control-actions {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
