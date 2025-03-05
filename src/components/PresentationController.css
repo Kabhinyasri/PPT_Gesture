@@ -62,7 +62,7 @@ body, html {
 }
 
 .time-icon {
-    color: var(--accent-color);
+    color: var(--background-gradient);
     width: 28px;
     height: 28px;
 }
@@ -78,7 +78,10 @@ body, html {
     background: rgba(255, 255, 255, 0.3);
     padding: 8px 15px;
     border-radius: 20px;
+    display: flex;
+    gap: 15px; /* Adjust the spacing as needed */
 }
+
 
 /* Gesture Control Section */
 .gesture-control-section {
@@ -157,7 +160,7 @@ body, html {
 
 .zoom-level {
     font-weight: bold;
-    color: var(--accent-color);
+    color: var(--text-color-dark);
     font-size: 1.2rem;
 }
 
@@ -193,6 +196,34 @@ body, html {
     background: var(--accent-color);
     transition: width 0.3s ease;
 }
+
+/* Apply same style as Start button */
+.mode-selection button,
+.default-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: var(--accent-color);
+    color: var(--text-color-dark);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.mode-selection button:hover,
+.default-button:hover {
+    background: color-mix(in srgb, var(--accent-color) 85%, white);
+}
+
+/* Add padding between Slide Mode and PDF Mode buttons */
+.mode-selection {
+    display: flex;
+    gap: 15px; /* Adjust this value as needed */
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

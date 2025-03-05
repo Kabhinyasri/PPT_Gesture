@@ -111,13 +111,8 @@ const PresentationController = () => {
                         </button>
 
                         <button className="gesture-button switch-tab-left">
-                            <ArrowLeft className="gesture-icon" />
-                            <span>Switch Tab Left</span>
-                        </button>
-
-                        <button className="gesture-button switch-tab-right">
                             <ArrowRight className="gesture-icon" />
-                            <span>Switch Tab Right</span>
+                            <span>Switch Tab</span>
                         </button>
 
                         <button className="gesture-button right-swipe" onClick={() => handleNavigation('right')} disabled={currentSlide === totalSlides}>
