@@ -8,8 +8,10 @@ import {
     Play,
     Pause,
     RotateCcw,
-    RotateCw
-} from 'lucide-react';
+    RotateCw,
+    RefreshCcw
+} 
+from 'lucide-react';
 import './PresentationController.css';
 
 const PresentationController = () => {
@@ -18,6 +20,8 @@ const PresentationController = () => {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [isPresenting, setIsPresenting] = useState(false);
     const [zoomLevel, setZoomLevel] = useState(100);
+    const [mode, setMode] = useState('slide');
+    const [slidesMoved, setSlidesMoved] = useState(0);
 
     useEffect(() => {
         let intervalId;
@@ -32,8 +36,10 @@ const PresentationController = () => {
     const handleNavigation = (direction) => {
         if (direction === 'right' && currentSlide < totalSlides) {
             setCurrentSlide(prev => prev + 1);
+            setSlidesMoved(prev => prev + 1);
         } else if (direction === 'left' && currentSlide > 1) {
             setCurrentSlide(prev => prev - 1);
+            setSlidesMoved(prev => prev - 1);
         }
     };
 
@@ -43,6 +49,34 @@ const PresentationController = () => {
         } else if (action === 'out' && zoomLevel > 50) {
             setZoomLevel(prev => prev - 10);
         }
+    };
+
+    const handleModeChange = async (newMode) => {
+        setMode(newMode);
+        console.log(`Active mode changed to: ${newMode}`);
+        try {
+            const response = await fetch('http://localhost:5000/set-mode', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: newMode }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Error sending mode to backend:', error);
+        }
+    };
+
+    const resetToDefault = () => {
+        setCurrentSlide(1);
+        setZoomLevel(100);
+        setMode('slide');
+        setSlidesMoved(0);
+        setElapsedTime(0);
+        setIsPresenting(false);
+
+        handleModeChange('default');
+
     };
 
     const formatTime = (seconds) => {
@@ -59,79 +93,55 @@ const PresentationController = () => {
                         <Clock className="time-icon" />
                         <span className="time-text">{formatTime(elapsedTime)}</span>
                     </div>
-
+                    <div className="mode-selection">
+                        <button onClick={() => handleModeChange('slide')}>Slide Mode</button>
+                        <button onClick={() => handleModeChange('pdf')}>PDF Mode</button>
+                    </div>
                     <div className="slide-info">
                         <span className="slide-counter">Slide {currentSlide} / {totalSlides}</span>
+                        <span className="slides-moved">Slides Moved: {slidesMoved}</span>
                     </div>
                 </div>
 
                 <div className="gesture-control-section">
                     <div className="navigation-buttons">
-                        {/* Left Swipe (Previous Slide) */}
-                        <button
-                            className="gesture-button left-swipe"
-                            onClick={() => handleNavigation('left')}
-                            disabled={currentSlide === 1}
-                        >
+                        <button className="gesture-button left-swipe" onClick={() => handleNavigation('left')} disabled={currentSlide === 1}>
                             <RotateCcw className="gesture-icon" />
                             <span>Left Swipe</span>
                         </button>
 
-                        {/* Switch to Previous Tab */}
-                        <button
-                            className="gesture-button switch-tab-left"
-                            onClick={() => console.log("Switching to Previous Tab")}
-                        >
+                        <button className="gesture-button switch-tab-left">
                             <ArrowLeft className="gesture-icon" />
                             <span>Switch Tab Left</span>
                         </button>
 
-                        {/* Switch to Next Tab */}
-                        <button
-                            className="gesture-button switch-tab-right"
-                            onClick={() => console.log("Switching to Next Tab")}
-                        >
+                        <button className="gesture-button switch-tab-right">
                             <ArrowRight className="gesture-icon" />
                             <span>Switch Tab Right</span>
                         </button>
 
-                        {/* Right Swipe (Next Slide) */}
-                        <button
-                            className="gesture-button right-swipe"
-                            onClick={() => handleNavigation('right')}
-                            disabled={currentSlide === totalSlides}
-                        >
+                        <button className="gesture-button right-swipe" onClick={() => handleNavigation('right')} disabled={currentSlide === totalSlides}>
                             <RotateCw className="gesture-icon" />
                             <span>Right Swipe</span>
                         </button>
                     </div>
 
-
                     <div className="control-actions">
                         <div className="zoom-controls">
-                            <button
-                                onClick={() => handleZoom('out')}
-                                className="zoom-button zoom-out"
-                            >
+                            <button onClick={() => handleZoom('out')} className="zoom-button zoom-out">
                                 <ZoomOut />
                                 <span>Zoom Out</span>
                             </button>
 
                             <span className="zoom-level">{zoomLevel}%</span>
 
-                            <button
-                                onClick={() => handleZoom('in')}
-                                className="zoom-button zoom-in"
-                            >
+                            <button onClick={() => handleZoom('in')} className="zoom-button zoom-in">
                                 <ZoomIn />
                                 <span>Zoom In</span>
                             </button>
                         </div>
 
-                        <button
-                            className="presentation-toggle"
-                            onClick={() => setIsPresenting(!isPresenting)}
-                        >
+                        <button className="presentation-toggle" onClick={() => setIsPresenting(!isPresenting)}>
                             {isPresenting ? (
                                 <>
                                     <Pause />
@@ -144,16 +154,17 @@ const PresentationController = () => {
                                 </>
                             )}
                         </button>
+
+                        {/* Default Reset Button */}
+                        <button className="default-button" onClick={resetToDefault}>
+                            <RefreshCcw />
+                            <span>Reset</span>
+                        </button>
                     </div>
                 </div>
 
                 <div className="progress-container">
-                    <div
-                        className="progress-bar"
-                        style={{
-                            width: `${(currentSlide / totalSlides) * 100}%`
-                        }}
-                    ></div>
+                    <div className="progress-bar" style={{ width: `${(currentSlide / totalSlides) * 100}%` }}></div>
                 </div>
             </div>
         </div>
